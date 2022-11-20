@@ -104,16 +104,21 @@ export default {
   padding: 5px 15px;
   color: black;
   position: absolute;
-  width: 300px;
-  height: 400px;
+  /* width: 300px; */
+  /* height: 400px; */
+  width: 100vw;
+  height: 100vh;
   border: 2px solid black;
   border-radius: 15px;
   background: #fff;
-  top: calc(50% - 150px);
-  left: calc(50% - 100px);
+  /* top: calc(50% - 150px);
+  left: calc(50% - 100px); */
+  top: 0;
+  left: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  font-size: 10px;
 }
 
 .schedule {
@@ -150,7 +155,7 @@ export default {
   background: #000;
   position: absolute;
   left: 0;
-  transform: translate(10px, 7px);
+  transform: translate(10px, 3px);
 }
 
 .close_container {

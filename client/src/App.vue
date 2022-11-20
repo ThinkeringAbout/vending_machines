@@ -1,7 +1,12 @@
 <template>
   <div class="input_container">
-    <h1>Список</h1>
-    <input v-model="this.filterInput" class="search_input" type="text" />
+    <h1>Торговые автоматы</h1>
+    <input
+      v-model="this.filterInput"
+      class="search_input"
+      type="text"
+      maxlength="100"
+    />
   </div>
   <div class="list">
     <div class="wrapper custom_scroll">
@@ -10,7 +15,12 @@
         :key="item.id"
         class="list__item"
       >
-        <MachineComponent :buttonAvailable="this.isModalOpen" :item="item" @modalOpened="this.isModalOpen = true" @modalClosed="this.isModalOpen = false" />
+        <MachineComponent
+          :buttonAvailable="this.isModalOpen"
+          :item="item"
+          @modalOpened="this.isModalOpen = true"
+          @modalClosed="this.isModalOpen = false"
+        />
       </div>
     </div>
   </div>
@@ -72,13 +82,15 @@ body {
 
 h1 {
   color: white;
-  text-shadow: 3px 2px 1px black;
+  text-shadow: 2px 1px 1px black;
+  font-size: 14px;
 }
 
 .input_container {
-  width: 800px;
+  width: 90%;
   display: flex;
   justify-content: space-around;
+  align-items: center;
   margin-bottom: 10px;
 }
 
@@ -87,19 +99,17 @@ h1 {
   font-family: "Inter";
   font-weight: bold;
   outline: none;
-  border: 2px solid #fff;
-  width: 250px;
+  border: 2px solid #000;
+  width: 150px;
+  height: 30px;
   border-radius: 15px;
   box-shadow: 3px 3px 1px black;
   transition: border 0.4s ease-in-out;
 }
 
-.input_container input:focus {
-  border: 2px solid #000;
-}
 
 .list {
-  width: 800px;
+  width: 100%;
   margin: 0 auto;
   border: 3px solid black;
   background-color: var(--blue-color);
@@ -121,14 +131,15 @@ h1 {
 }
 
 .list__item {
-  width: 90%;
-  min-height: 180px;
-  max-height: 180px;
+  width: 95%;
+  min-height: 350px;
+  height: fit-content;
   border: 2px solid #000;
   border-radius: 15px;
   background: #fff;
   box-shadow: 4px 3px 3px #000;
   display: flex;
+  flex-wrap: wrap-reverse;
   overflow: hidden;
 }
 
@@ -155,17 +166,18 @@ h1 {
 }
 
 .item__info {
-  height: 100%;
-  width: 70%;
+  height: 50%;
+  width: 100%;
   padding: 10px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 8px;
+  font-size: 10px;
 }
 
 .item__geo {
-  height: 100%;
-  width: 30%;
+  height: 180px;
+  width: 100%;
 }
 
 .item__geo img {
@@ -177,12 +189,13 @@ h1 {
 .item_id {
   display: flex;
   align-items: center;
+  width: 100%;
   gap: 5px;
 }
 
 .item_id p {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 10px;
 }
 
 .item_tags {
@@ -192,11 +205,11 @@ h1 {
 }
 
 .tag {
-  font-size: 10px;
+  font-size: 7px;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 50px;
+  min-width: 30px;
   height: 20px;
   border: 2px solid grey;
   color: rgb(111, 58, 4);
@@ -206,7 +219,7 @@ h1 {
 }
 
 .item_time {
-  width: 140px;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -235,8 +248,61 @@ h1 {
 .item_time:disabled:hover {
   color: grey;
   border-color: grey;
-  cursor:default;
+  cursor: default;
   box-shadow: none;
   background-color: #fff;
+}
+
+@media screen and (min-width: 500px) {
+  .schedule_container {
+    width: 300px;
+    height: 400px;
+    top: calc(50% - 150px);
+    left: calc(50% - 100px);
+    font-size: 14px;
+  }
+  .active::before {
+    transform: translate(10px, 7px);
+  }
+}
+
+@media screen and (min-width: 850px) {
+  .item_time {
+    width: 140px;
+  }
+  .tag {
+    font-size: 10px;
+    min-width: 50px;
+  }
+  .item_id p {
+    font-size: 20px;
+  }
+  .list__item {
+    min-height: 180px;
+    max-height: 180px;
+    flex-wrap: nowrap;
+  }
+  .item__geo {
+    height: 100%;
+    width: 30%;
+  }
+
+  .item__info {
+    gap: 15px;
+    height: 100%;
+    width: 70%;
+    font-size: 16px;
+  }
+  .search_input {
+    width: 250px;
+  }
+  .list,
+  .input_container {
+    width: 800px;
+  }
+  h1 {
+    font-size: 26px;
+    text-shadow: 3px 2px 1px black;
+  }
 }
 </style>

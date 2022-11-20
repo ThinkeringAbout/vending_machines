@@ -82,26 +82,31 @@ export default {
           return {
             color: "rgb(18, 197, 33)",
             borderColor: "rgb(18, 197, 33)",
+            boxShadow: "0 0 2px rgb(18, 197, 33)",
           };
         case "coffee":
           return {
             color: "rgb(139, 84, 29)",
             borderColor: "rgb(139, 84, 29)",
+            boxShadow: "0 0 2px rgb(139, 84, 29)",
           };
         case "hot_chocolate":
           return {
             color: "rgb(111, 58, 4)",
             borderColor: "rgb(111, 58, 4)",
+            boxShadow: "0 0 2px rgb(111, 58, 4)",
           };
         case "juices":
           return {
             color: "orange",
             borderColor: "orange",
+            boxShadow: "0 0 2px orange",
           };
         default:
           return {
             color: "black",
             borderColor: "black",
+            boxShadow: "0 0 2px black",
           };
       }
     },
