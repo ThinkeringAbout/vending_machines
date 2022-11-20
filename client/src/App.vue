@@ -5,25 +5,39 @@
   </div>
   <div class="list">
     <div class="wrapper custom_scroll">
-      <div class="list__item"></div>
-      <div class="list__item"></div>
-      <div class="list__item"></div>
-      <div class="list__item"></div>
-      <div class="list__item"></div>
-      <div class="list__item"></div>
+      <div v-for="item in this.vendingMachines" :key="item.id" class="list__item">
+        <div class="item__info">
+
+        </div>
+        <div class="item__geo">
+          
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
-<script></script>
+<script>
+export default {
+  computed: {
+    vendingMachines() {
+      return this.$store.state.vendingMachines;
+    },
+  },
+  mounted() {
+    this.$store.commit('loadVendingMachines');
+    this.$store.commit('loadTradePoints');
+    this.$store.commit('loadMachineTypes');
+  }
+}
+</script>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 
 :root {
-  --green-color: #76c893;
-  --blue-color: rgb(90, 90, 255);
   --bg-color: #76c893;
+  --blue-color: rgb(187, 187, 248);
 }
 
 *,
@@ -64,21 +78,21 @@ h1 {
   font-family: 'Inter';
   font-weight: bold;
   outline: none;
-  border: 3px solid black;
+  border: 2px solid #fff;
   width: 250px;
   border-radius: 15px;
   box-shadow: 3px 3px 1px black;
-  transition: border .2s ease-in-out;
+  transition: border .4s ease-in-out;
 }
 
 .input_container input:focus {
-  border: 3px solid rgb(90, 90, 255);
+  border: 2px solid #000;
 }
 
 .list {
   width: 800px;
   margin: 0 auto;
-  border: 2px solid black;
+  border: 3px solid black;
   background-color: var(--blue-color);
   height: 90vh;
   border-radius: 20px;
@@ -100,10 +114,10 @@ h1 {
 .list__item {
   width: 80%;
   min-height: 180px;
-  border: 3px solid black;
+  border: 3px solid #000;
   border-radius: 15px;
   background: #fff;
-  box-shadow: 4px 2px 3px black;
+  box-shadow: 4px 3px 3px #000;
 }
 
 .custom_scroll {
@@ -116,7 +130,7 @@ h1 {
 
 .custom_scroll::-webkit-scrollbar-track {
   border-radius: 20px;
-  background-color: rgb(185, 183, 183);
+  background-color: rgb(255, 255, 255);
 }
 
 .custom_scroll::-webkit-scrollbar-thumb {
