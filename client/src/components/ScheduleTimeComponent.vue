@@ -142,6 +142,7 @@ export default {
 .day_time {
   width: 50%;
   text-align: right;
+  font-weight: bold;
 }
 
 .active::before {
