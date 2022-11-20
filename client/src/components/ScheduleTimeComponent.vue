@@ -105,15 +105,11 @@ export default {
   padding: 5px 15px;
   color: black;
   position: absolute;
-  /* width: 300px; */
-  /* height: 400px; */
+  border: 2px solid black;
   width: 100vw;
   height: 100vh;
-  border: 2px solid black;
   border-radius: 15px;
   background: #fff;
-  /* top: calc(50% - 150px);
-  left: calc(50% - 100px); */
   top: 0;
   left: 0;
   display: flex;
@@ -153,7 +149,7 @@ export default {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #000;
+  background: rgb(66, 110, 231);
   position: absolute;
   left: 0;
   transform: translate(10px, 3px);
@@ -173,6 +169,7 @@ export default {
     justify-content: center;
     align-items: center;
     transition: all 0.4s ease;
+    border-radius: 5px;
 }
 
 .close_container:hover {

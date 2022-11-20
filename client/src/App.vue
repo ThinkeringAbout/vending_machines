@@ -115,7 +115,7 @@ h1 {
   background-color: var(--blue-color);
   height: 90vh;
   border-radius: 20px;
-  box-shadow: 6px 3px 3px black;
+  box-shadow: 6px 3px 2px black;
   padding: 5px;
 }
 
@@ -137,7 +137,7 @@ h1 {
   border: 2px solid #000;
   border-radius: 15px;
   background: #fff;
-  box-shadow: 4px 3px 3px #000;
+  box-shadow: 4px 3px 1px #000;
   display: flex;
   flex-wrap: wrap-reverse;
   overflow: hidden;
