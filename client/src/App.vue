@@ -10,7 +10,7 @@
         :key="item.id"
         class="list__item"
       >
-        <MachineComponent :item="item" />
+        <MachineComponent :buttonAvailable="this.isModalOpen" :item="item" @modalOpened="this.isModalOpen = true" @modalClosed="this.isModalOpen = false" />
       </div>
     </div>
   </div>
@@ -21,6 +21,11 @@ import MachineComponent from "./components/MachineComponent.vue";
 
 export default {
   components: { MachineComponent },
+  data() {
+    return {
+      isModalOpen: false,
+    };
+  },
   computed: {
     vendingMachines() {
       return this.$store.state.vendingMachines;
@@ -115,13 +120,15 @@ h1 {
 }
 
 .list__item {
-  width: 80%;
-  min-height: 160px;
-  border: 3px solid #000;
+  width: 90%;
+  min-height: 180px;
+  max-height: 180px;
+  border: 2px solid #000;
   border-radius: 15px;
   background: #fff;
   box-shadow: 4px 3px 3px #000;
   display: flex;
+  overflow: hidden;
 }
 
 .custom_scroll {
@@ -158,7 +165,12 @@ h1 {
 .item__geo {
   height: 100%;
   width: 30%;
-  border-left: 1px solid black;
+}
+
+.item__geo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .item_id {
@@ -190,5 +202,40 @@ h1 {
   font-weight: bold;
   color: grey;
   padding: 3px;
+}
+
+.item_time {
+  width: 140px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  font-weight: bold;
+  border: 2px solid rgb(66, 110, 231);
+  color: rgb(66, 110, 231);
+  background: #fff;
+  border-radius: 10px;
+  transition: all 0.2s ease-in-out;
+}
+
+.item_time:hover {
+  cursor: pointer;
+  color: #fff;
+  background: rgb(66, 110, 231);
+  box-shadow: 3px 2px 2px black;
+}
+
+.item_time:disabled {
+  color: grey;
+  border-color: grey;
+  background-color: #fff;
+}
+
+.item_time:disabled:hover {
+  color: grey;
+  border-color: grey;
+  cursor:default;
+  box-shadow: none;
+  background-color: #fff;
 }
 </style>

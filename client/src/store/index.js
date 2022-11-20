@@ -29,7 +29,7 @@ const store = createStore({
         getMachineAddress: (state) => (id) => {
             return state.tradePoints.find(point => point.id === id);
         },
-        getMachineTags: (state) => (id) => {
+        getMachineTypes: (state) => (id) => {
             return state.machineTypes.find(machine => machine.id === id);
         }
     }
