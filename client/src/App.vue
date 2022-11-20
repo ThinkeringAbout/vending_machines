@@ -7,10 +7,24 @@
     <div class="wrapper custom_scroll">
       <div v-for="item in this.vendingMachines" :key="item.id" class="list__item">
         <div class="item__info">
-
+          <div class="item_id">
+            <p>#{{ item.serialNumber }}</p>
+            <div class="item_tags">
+              <div class="tag" :style="getStyles(tag)" v-for="tag in this.$store.getters.getMachineTags(item.id)?.tags">{{ getReadableTag(tag) }}</div>
+            </div>
+          </div>
+          <div class="item_address">
+            <p>{{ this.$store.getters.getMachineAddress(item.tradePointId)?.location.address }}</p>
+          </div>
+          <div class="item_floor">
+            <p>Этаж: {{ item.floor }}</p>
+          </div>
+          <div class="item_time">
+            <p>Время работы</p>
+          </div>
         </div>
         <div class="item__geo">
-          
+
         </div>
       </div>
     </div>
@@ -22,6 +36,53 @@ export default {
   computed: {
     vendingMachines() {
       return this.$store.state.vendingMachines;
+    },
+  },
+  methods: {
+    getReadableTag(tag) {
+      switch (tag) {
+        case "only_non_cash_payments":
+          return "Безнал 💰";          
+        case "coffee":
+          return "Кофе ☕";
+        case "cashier":
+          return "Есть кассир 🤵";
+        case "hot_chocolate":
+          return "Горячий шоколад 🤎";
+        case "juices":
+          return "Соки 🍊";
+        default:
+          return "Unknown ❓";
+      };
+    },
+    getStyles(tag) {
+      switch (tag) {
+        case "only_non_cash_payments":
+          return {
+            color: 'rgb(18, 197, 33)',
+            borderColor: 'rgb(18, 197, 33)',
+          };
+        case "coffee":
+          return {
+            color: 'rgb(139, 84, 29)',
+            borderColor: 'rgb(139, 84, 29)',
+          };
+        case "hot_chocolate":
+          return {
+            color: 'rgb(111, 58, 4)',
+            borderColor: 'rgb(111, 58, 4)',
+          };
+        case "juices":
+          return {
+            color: 'orange',
+            borderColor: 'orange',
+          }
+        default:
+          return {
+            color: 'black',
+            borderColor: 'black',
+          };
+      };
     },
   },
   mounted() {
@@ -113,11 +174,12 @@ h1 {
 
 .list__item {
   width: 80%;
-  min-height: 180px;
+  min-height: 160px;
   border: 3px solid #000;
   border-radius: 15px;
   background: #fff;
   box-shadow: 4px 3px 3px #000;
+  display: flex;
 }
 
 .custom_scroll {
@@ -141,4 +203,51 @@ h1 {
 .custom_scroll::-webkit-scrollbar-thumb:hover {
   border: 1px solid #fff;
 }
+
+.item__info {
+  height: 100%;
+  width: 70%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.item__geo {
+  height: 100%;
+  width: 30%;
+  border-left: 1px solid black;
+}
+
+.item_id {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.item_id p {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.item_tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.tag {
+  font-size: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 50px;
+  height: 20px;
+  border: 2px solid grey;
+  color:rgb(111, 58, 4);
+  font-weight: bold;
+  color: grey;
+  padding: 3px;
+}
+
 </style>

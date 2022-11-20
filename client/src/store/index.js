@@ -25,6 +25,14 @@ const store = createStore({
             state.machineTypes = response.data;
         },
     },
+    getters: {
+        getMachineAddress: (state) => (id) => {
+            return state.tradePoints.find(point => point.id === id);
+        },
+        getMachineTags: (state) => (id) => {
+            return state.machineTypes.find(machine => machine.id === id);
+        }
+    }
 })
 
 export default store;
