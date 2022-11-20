@@ -34,7 +34,7 @@
     </div>
   </div>
   <Transition name="time">
-    <ScheduleTimeComponent :tradePointId="item.tradePointId" v-if="!this.isModalOpen" @mouseleave="closeModal" @click="closeModal" />
+    <ScheduleTimeComponent @buttonClose="closeModal" :tradePointId="item.tradePointId" v-if="this.isModalOpen" @mouseleave="closeModal" />
   </Transition>
 </template>
 

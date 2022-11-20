@@ -1,10 +1,14 @@
 <template>
   <div class="schedule_container">
+    <div class="close_container" @click="this.$emit('buttonClose')">
+        Закрыть
+    </div>
     <h2>Время работы</h2>
-    <p>Открыто {{ getTodayAvailability(tradePointId) }}</p>
+    <p>{{ getTodayAvailability() }}</p>
     <div class="schedule">
       <div
         class="day"
+        :class="{ active: this.checkToday(key) }"
         v-for="(item, key) of this.$store.getters.getMachineAddress(
           tradePointId
         )?.workingTime"
@@ -20,6 +24,7 @@
 export default {
   name: "ScheduleTimeComponent",
   props: ["tradePointId"],
+  emits: ["buttonClose"],
   methods: {
     getWeekDay(key) {
       switch (key) {
@@ -47,7 +52,31 @@ export default {
       }
       return "Выходной";
     },
-    getTodayAvailability(tradePointId) {
+    getTodayAvailability() {
+      const transformedToday = this.getActiveDay;
+      const workTime = this.$store.getters.getMachineAddress(this.tradePointId)
+        ?.workingTime[transformedToday];
+      if (!workTime) {
+        return "Закрыто";
+      }
+      const date = new Date();
+      const timeHour = date.getHours();
+      const timeMinutes = date.getMinutes();
+      if (timeHour > Number(workTime.slice(-5, -3))) {
+        return "Закрыто";
+      } else if (timeHour == Number(workTime.slice(-5, -3))) {
+        if (timeMinutes >= Number(workTime.slice(-2, workTime.length))) {
+            return "Закрыто";
+        }
+      }
+      return `Открыто до ${workTime.slice(-5)}`;
+    },
+    checkToday(day) {
+      return this.getActiveDay == day ? true : false;
+    },
+  },
+  computed: {
+    getActiveDay() {
       const date = new Date();
       const today = date.getDay();
       const transformedToday =
@@ -64,11 +93,7 @@ export default {
           : today == 5
           ? "fri"
           : "sat";
-      const workTime = String(this.$store.getters.getMachineAddress(tradePointId)?.workingTime[transformedToday]);
-      if (!workTime) {
-        return 'Закрыто';
-      }
-      return `Открыто до ${workTime.slice(-4, 0)}`;
+      return transformedToday;
     },
   },
 };
@@ -94,7 +119,6 @@ export default {
 .schedule {
   height: 70%;
   width: 100%;
-  border: 1px solid black;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -118,10 +142,35 @@ export default {
   text-align: right;
 }
 
-/* .day::before {
-    content: "*";
+.active::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #000;
+  position: absolute;
+  left: 0;
+  transform: translate(10px, 7px);
+}
+
+.close_container {
     position: absolute;
-    left: 0;
-    transform: translate(20px, 1px);
-} */
+    right: 15px;
+    top: 22px;
+    width: 60px;
+    height: 20px;
+    font-weight: bold;
+    background-color: rgb(235, 49, 49);
+    color: #fff;
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.4s ease;
+}
+
+.close_container:hover {
+    cursor: pointer;
+    box-shadow: 0 0 5px red;
+}
 </style>

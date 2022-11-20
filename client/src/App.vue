@@ -1,7 +1,7 @@
 <template>
   <div class="input_container">
     <h1>Список</h1>
-    <input class="search_input" type="text" />
+    <input v-model="this.filterInput" class="search_input" type="text" />
   </div>
   <div class="list">
     <div class="wrapper custom_scroll">
@@ -24,11 +24,12 @@ export default {
   data() {
     return {
       isModalOpen: false,
+      filterInput: "",
     };
   },
   computed: {
     vendingMachines() {
-      return this.$store.state.vendingMachines;
+      return this.$store.getters.getMachinesList(this.filterInput);
     },
   },
 
