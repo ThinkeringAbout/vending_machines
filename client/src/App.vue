@@ -1,100 +1,42 @@
 <template>
   <div class="input_container">
     <h1>Список</h1>
-    <input class="search_input" type="text">
+    <input class="search_input" type="text" />
   </div>
   <div class="list">
     <div class="wrapper custom_scroll">
-      <div v-for="item in this.vendingMachines" :key="item.id" class="list__item">
-        <div class="item__info">
-          <div class="item_id">
-            <p>#{{ item.serialNumber }}</p>
-            <div class="item_tags">
-              <div class="tag" :style="getStyles(tag)" v-for="tag in this.$store.getters.getMachineTags(item.id)?.tags">{{ getReadableTag(tag) }}</div>
-            </div>
-          </div>
-          <div class="item_address">
-            <p>{{ this.$store.getters.getMachineAddress(item.tradePointId)?.location.address }}</p>
-          </div>
-          <div class="item_floor">
-            <p>Этаж: {{ item.floor }}</p>
-          </div>
-          <div class="item_time">
-            <p>Время работы</p>
-          </div>
-        </div>
-        <div class="item__geo">
-
-        </div>
+      <div
+        v-for="item in this.vendingMachines"
+        :key="item.id"
+        class="list__item"
+      >
+        <MachineComponent :item="item" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import MachineComponent from "./components/MachineComponent.vue";
+
 export default {
+  components: { MachineComponent },
   computed: {
     vendingMachines() {
       return this.$store.state.vendingMachines;
     },
   },
-  methods: {
-    getReadableTag(tag) {
-      switch (tag) {
-        case "only_non_cash_payments":
-          return "Безнал 💰";          
-        case "coffee":
-          return "Кофе ☕";
-        case "cashier":
-          return "Есть кассир 🤵";
-        case "hot_chocolate":
-          return "Горячий шоколад 🤎";
-        case "juices":
-          return "Соки 🍊";
-        default:
-          return "Unknown ❓";
-      };
-    },
-    getStyles(tag) {
-      switch (tag) {
-        case "only_non_cash_payments":
-          return {
-            color: 'rgb(18, 197, 33)',
-            borderColor: 'rgb(18, 197, 33)',
-          };
-        case "coffee":
-          return {
-            color: 'rgb(139, 84, 29)',
-            borderColor: 'rgb(139, 84, 29)',
-          };
-        case "hot_chocolate":
-          return {
-            color: 'rgb(111, 58, 4)',
-            borderColor: 'rgb(111, 58, 4)',
-          };
-        case "juices":
-          return {
-            color: 'orange',
-            borderColor: 'orange',
-          }
-        default:
-          return {
-            color: 'black',
-            borderColor: 'black',
-          };
-      };
-    },
-  },
+
   mounted() {
-    this.$store.commit('loadVendingMachines');
-    this.$store.commit('loadTradePoints');
-    this.$store.commit('loadMachineTypes');
-  }
-}
+    this.$store.commit("loadVendingMachines");
+    this.$store.commit("loadTradePoints");
+    this.$store.commit("loadMachineTypes");
+  },
+};
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
 
 :root {
   --bg-color: #76c893;
@@ -110,7 +52,7 @@ export default {
 }
 
 html {
-  font-family: 'Inter';
+  font-family: "Inter";
 }
 
 body {
@@ -136,14 +78,14 @@ h1 {
 
 .search_input {
   padding: 10px;
-  font-family: 'Inter';
+  font-family: "Inter";
   font-weight: bold;
   outline: none;
   border: 2px solid #fff;
   width: 250px;
   border-radius: 15px;
   box-shadow: 3px 3px 1px black;
-  transition: border .4s ease-in-out;
+  transition: border 0.4s ease-in-out;
 }
 
 .input_container input:focus {
@@ -244,10 +186,9 @@ h1 {
   min-width: 50px;
   height: 20px;
   border: 2px solid grey;
-  color:rgb(111, 58, 4);
+  color: rgb(111, 58, 4);
   font-weight: bold;
   color: grey;
   padding: 3px;
 }
-
 </style>
