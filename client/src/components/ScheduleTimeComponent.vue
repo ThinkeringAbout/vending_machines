@@ -62,9 +62,10 @@ export default {
       const date = new Date();
       const timeHour = date.getHours();
       const timeMinutes = date.getMinutes();
-      if (timeHour > Number(workTime.slice(-5, -3))) {
+      if (timeHour > Number(workTime.slice(-5, -3)) || timeHour < Number(workTime.slice(0, 2))) {
         return "Закрыто";
-      } else if (timeHour == Number(workTime.slice(-5, -3))) {
+      }
+      if (timeHour == Number(workTime.slice(-5, -3))) {
         if (timeMinutes >= Number(workTime.slice(-2, workTime.length))) {
             return "Закрыто";
         }
