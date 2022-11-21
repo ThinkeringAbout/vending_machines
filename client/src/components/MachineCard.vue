@@ -6,7 +6,8 @@
         <div
           class="tag"
           :style="getStyles(tag)"
-          v-for="tag in this.$store.getters.getMachineTypes(item.id)?.tags"
+          v-for="tag in item.tags"
+          :key="tag"
         >
           {{ getReadableTag(tag) }}
         </div>
@@ -15,8 +16,7 @@
     <div class="item_address">
       <p>
         {{
-          this.$store.getters.getMachineAddress(item.tradePointId)?.location
-            .address
+          item.tradePoint?.location.address
         }}
       </p>
     </div>
@@ -28,28 +28,27 @@
     </button>
   </div>
   <div class="item__geo">
-    <img v-if="getAddressOnMap" :src="getAddressOnMap" alt="" />
+    <img v-if="mapSnapshotUrl" :src="mapSnapshotUrl" alt="map snapshot" />
     <div v-else class="loading_container">
       <div class="loading"></div>
     </div>
   </div>
   <Transition name="time">
-    <ScheduleTimeComponent
+    <ScheduleWindow
       @buttonClose="closeModal"
-      :tradePointId="item.tradePointId"
+      :workingTime="item.tradePoint.workingTime"
       v-if="this.isModalOpen"
-      @mouseleave="closeModal"
     />
   </Transition>
 </template>
 
 <script>
-import ScheduleTimeComponent from "./ScheduleTimeComponent.vue";
+import ScheduleWindow from "./ScheduleWindow.vue";
 
 export default {
   name: "MachineComponent",
   props: ["item", "buttonAvailable"],
-  components: { ScheduleTimeComponent },
+  components: { ScheduleWindow },
   emits: ["modalOpened", "modalClosed"],
   data() {
     return {
@@ -66,20 +65,14 @@ export default {
       this.$emit("modalClosed");
     },
     getReadableTag(tag) {
-      switch (tag) {
-        case "only_non_cash_payments":
-          return "Безнал 💳";
-        case "coffee":
-          return "Кофе ☕";
-        case "cashier":
-          return "Есть кассир 🤵";
-        case "hot_chocolate":
-          return "Горячий шоколад 🤎";
-        case "juices":
-          return "Соки 🍊";
-        default:
-          return "Unknown ❓";
+      const tagsObject = {
+        "only_non_cash_payments": "Безнал 💳",
+        "coffee": "Кофе ☕",
+        "cashier": "Есть кассир 🤵",
+        "juices": "Соки 🍊",
+        "hot_chocolate": "Горячий шоколад 🤎",
       }
+      return tag in tagsObject ? tagsObject[tag] : "Unknown ❓";
     },
     getStyles(tag) {
       const styleObject = {
@@ -87,24 +80,17 @@ export default {
         borderColor: "",
         boxShadow: "",
       };
-      let mainColor = "black";
-      switch (tag) {
-        case "only_non_cash_payments":
-          mainColor = "rgb(18, 197, 33)";
-          break;
-        case "coffee":
-          mainColor = "rgb(139, 84, 29)";
-          break;
-        case "hot_chocolate":
-          mainColor = "rgb(111, 58, 4)";
-          break;
-        case "juices":
-          mainColor = "orange";
-          break;
-        default:
-          mainColor = "black";
-          break;
+
+      const colorsObject = {
+        "only_non_cash_payments": "rgb(18, 197, 33)",
+        "coffee": "rgb(139, 84, 29)",
+        "cashier": "black",
+        "juices": "orange",
+        "hot_chocolate": "rgb(111, 58, 4)",
       }
+
+      const mainColor = tag in colorsObject ? colorsObject[tag] : "black";
+
       styleObject.color = mainColor;
       styleObject.borderColor = mainColor;
       styleObject.boxShadow = `0 0 2px ${mainColor}`;
@@ -112,13 +98,9 @@ export default {
     },
   },
   computed: {
-    getAddressOnMap() {
-      const latitude = this.$store.getters.getMachineAddress(
-        this.item.tradePointId
-      )?.location.latitude;
-      const longitude = this.$store.getters.getMachineAddress(
-        this.item.tradePointId
-      )?.location.longitude;
+    mapSnapshotUrl() {
+      const latitude = this.item.tradePoint?.location.latitude;
+      const longitude = this.item.tradePoint?.location.longitude;
       const urlGeo = `http://static.maps.2gis.com/1.0?center=${longitude},${latitude}&zoom=16&size=200,200&markers=${longitude},${latitude}`;
       if (latitude && longitude) {
         return urlGeo;

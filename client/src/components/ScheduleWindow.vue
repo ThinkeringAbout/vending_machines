@@ -1,20 +1,20 @@
 <template>
-  <div class="schedule_container">
-    <div class="close_container" @click="this.$emit('buttonClose')">
-      Закрыть
-    </div>
-    <h2>Время работы</h2>
-    <p>{{ getTodayAvailability() }}</p>
-    <div class="schedule">
-      <div
-        class="day"
-        :class="{ active: this.checkToday(key) }"
-        v-for="(item, key) of this.$store.getters.getMachineAddress(
-          tradePointId
-        )?.workingTime"
-      >
-        <p class="week_day">{{ getWeekDay(key) }}</p>
-        <p class="day_time">{{ getTime(item) }}</p>
+  <div class="schedule_mask">
+    <div class="schedule_container">
+      <div class="close_container" @click="this.$emit('buttonClose')">
+        Закрыть
+      </div>
+      <h2>Время работы</h2>
+      <p>{{ getTodayAvailability }}</p>
+      <div class="schedule">
+        <div
+          class="day"
+          :class="{ active: this.checkToday(key) }"
+          v-for="(item, key) of workingTime"
+        >
+          <p class="week_day">{{ getWeekDay(key) }}</p>
+          <p class="day_time">{{ getTime(item) }}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -23,28 +23,20 @@
 <script>
 export default {
   name: "ScheduleTimeComponent",
-  props: ["tradePointId"],
+  props: ["workingTime"],
   emits: ["buttonClose"],
   methods: {
     getWeekDay(key) {
-      switch (key) {
-        case "mon":
-          return "Понедельник";
-        case "tue":
-          return "Вторник";
-        case "wed":
-          return "Среда";
-        case "thu":
-          return "Четверг";
-        case "fri":
-          return "Пятница";
-        case "sat":
-          return "Суббота";
-        case "sun":
-          return "Воскресенье";
-        default:
-          break;
+      const weekDays = {
+        "mon": "Понедельник",
+        "tue": "Вторник",
+        "wed": "Среда",
+        "thu": "Четверг",
+        "fri": "Пятница",
+        "sat": "Суббота",
+        "sun": "Воскресенье",
       }
+      return weekDays[key];
     },
     getTime(time) {
       if (time) {
@@ -52,10 +44,14 @@ export default {
       }
       return "Выходной";
     },
+    checkToday(day) {
+      return this.getActiveDay == day ? true : false;
+    },
+  },
+  computed: {
     getTodayAvailability() {
       const transformedToday = this.getActiveDay;
-      const workTime = this.$store.getters.getMachineAddress(this.tradePointId)
-        ?.workingTime[transformedToday];
+      const workTime = this.workingTime[transformedToday];
       if (!workTime) {
         return "Закрыто";
       }
@@ -72,11 +68,6 @@ export default {
       }
       return `Открыто до ${workTime.slice(-5)}`;
     },
-    checkToday(day) {
-      return this.getActiveDay == day ? true : false;
-    },
-  },
-  computed: {
     getActiveDay() {
       const date = new Date();
       const today = date.getDay();
@@ -88,22 +79,32 @@ export default {
 </script>
 
 <style>
-.schedule_container {
-  padding: 25px;
-  margin: 25px;
-  color: black;
+.schedule_mask {
   position: absolute;
-  border: 2px solid black;
-  width: 90vw;
-  height: 90vh;
-  border-radius: 15px;
-  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
   top: 0;
   left: 0;
+  background-color: rgba(0, 0, 0, 0.76);
+}
+.schedule_container {
+  position: relative;
+  top: 0;
+  left: 0;
+  padding: 20px;
+  width: 80vw;
+  height: 60vh;
+  color: black;
+  border: 4px solid black;
+  border-radius: 15px;
+  background: #fff;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .schedule {
@@ -141,24 +142,25 @@ export default {
   background: rgb(66, 110, 231);
   position: absolute;
   left: 0;
-  transform: translate(10px, 3px);
+  transform: translate(15px, 3px);
 }
 
 .close_container {
   position: absolute;
   right: 15px;
-  top: 22px;
-  width: 60px;
+  top: 34px;
+  width: 50px;
+  font-size: 8px;
   height: 20px;
   font-weight: bold;
   background-color: rgb(235, 49, 49);
   color: #fff;
-  font-size: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   transition: all 0.4s ease;
   border-radius: 5px;
+  border: 2px solid black;
 }
 
 .close_container:hover {

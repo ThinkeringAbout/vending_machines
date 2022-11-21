@@ -7,43 +7,51 @@ const store = createStore({
   state() {
     return {
       vendingMachines: [],
-      tradePoints: [],
-      machineTypes: [],
     };
   },
   mutations: {
-    async loadVendingMachines(state) {
+    setVendingMachines(state, array) {
+      state.vendingMachines = array;
+    },
+    setTradePoints(state, array) {
+      state.vendingMachines.forEach((machine) => {
+        machine.tradePoint = array.find(
+          (tradePoint) => machine.tradePointId === tradePoint.id
+        );
+      });
+    },
+    setMachineTypes(state, array) {
+      state.vendingMachines.forEach((machine) => {
+        machine.tags = array.find((types) => machine.typeId === types.id).tags;
+      });
+    },
+  },
+  actions: {
+    async loadVendingMachines(context) {
       const response = await axios.get(url + "/machines");
-      state.vendingMachines = response.data;
+      context.commit("setVendingMachines", response.data);
     },
-    async loadTradePoints(state) {
+    async loadTradePoints(context) {
       const response = await axios.get(url + "/tradePoints");
-      state.tradePoints = response.data;
+      context.commit("setTradePoints", response.data);
     },
-    async loadMachineTypes(state) {
+    async loadMachineTypes(context) {
       const response = await axios.get(url + "/machineTypes");
-      state.machineTypes = response.data;
+      context.commit("setMachineTypes", response.data);
     },
   },
   getters: {
-    getMachinesList: (state) => (filter) => {
+    filteredMachinesList: (state) => (filter) => {
       if (!filter) {
         return state.vendingMachines;
       }
       return state.vendingMachines.filter(
         (item) =>
           item.serialNumber.toLowerCase().includes(filter.toLowerCase()) ||
-          state.tradePoints
-            .find((tradePoint) => tradePoint.id === item.tradePointId)
-            .location.address.toLowerCase()
+          item.tradePoint.location.address
+            .toLowerCase()
             .includes(filter.toLowerCase())
       );
-    },
-    getMachineAddress: (state) => (id) => {
-      return state.tradePoints.find((point) => point.id === id);
-    },
-    getMachineTypes: (state) => (id) => {
-      return state.machineTypes.find((machine) => machine.id === id);
     },
   },
 });

@@ -6,6 +6,7 @@
       class="search_input"
       type="text"
       maxlength="100"
+      placeholder="Поиск..."
     />
   </div>
   <div class="list">
@@ -15,7 +16,7 @@
         :key="item.id"
         class="list__item"
       >
-        <MachineComponent
+        <MachineCard
           :buttonAvailable="this.isModalOpen"
           :item="item"
           @modalOpened="this.isModalOpen = true"
@@ -27,10 +28,10 @@
 </template>
 
 <script>
-import MachineComponent from "./components/MachineComponent.vue";
+import MachineCard from "./components/MachineCard.vue";
 
 export default {
-  components: { MachineComponent },
+  components: { MachineCard },
   data() {
     return {
       isModalOpen: false,
@@ -39,25 +40,20 @@ export default {
   },
   computed: {
     vendingMachines() {
-      return this.$store.getters.getMachinesList(this.filterInput);
+      return this.$store.getters.filteredMachinesList(this.filterInput);
     },
   },
 
   mounted() {
-    this.$store.commit("loadVendingMachines");
-    this.$store.commit("loadTradePoints");
-    this.$store.commit("loadMachineTypes");
+    this.$store.dispatch("loadVendingMachines");
+    this.$store.dispatch("loadTradePoints");
+    this.$store.dispatch("loadMachineTypes");
   },
 };
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
-
-:root {
-  --bg-color: #76c893;
-  --blue-color: rgb(187, 187, 248);
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 
 *,
 *::after,
@@ -67,54 +63,65 @@ export default {
   box-sizing: border-box;
 }
 
-html {
-  font-family: "Inter";
+html,
+button {
+  font-family: "Inter", sans-serif;
 }
 
 body {
   width: 100%;
   min-height: 100vh;
-  background: var(--bg-color);
+  background: #d2d0d0;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 h1 {
-  color: white;
-  text-shadow: 2px 1px 1px black;
-  font-size: 14px;
+  color: #fff;
+  text-shadow: 1px 0 2px #000, 
+0 1px 2px #000, 
+-1px 0 2px #000, 
+0 -1px 2px #000;
+  font-size: 12px;
+  display: none;
 }
 
 .input_container {
-  width: 90%;
+  width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  padding: 10px;
   align-items: center;
   margin-bottom: 10px;
+  border: 3px solid black;
+  box-shadow: 0px 1px 1px black;
+  background-color: rgb(66, 110, 231);
+  border-radius: 15px;
 }
 
 .search_input {
   padding: 10px;
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-weight: bold;
   outline: none;
-  border: 2px solid #000;
-  width: 150px;
+  border: 3px solid #000;
+  width: 100%;
   height: 30px;
   border-radius: 15px;
-  box-shadow: 3px 3px 1px black;
+  box-shadow: 0px 1px 1px black;
   transition: border 0.4s ease-in-out;
 }
 
 .list {
   width: 100%;
   margin: 0 auto;
+  background-color: #fff;
+  height: 88vh;
+  border-radius: 15px;
   border: 3px solid black;
-  background-color: var(--blue-color);
-  height: 90vh;
-  border-radius: 20px;
-  box-shadow: 6px 3px 2px black;
+  box-shadow: 0px 1px 1px black;
+  background-color: rgb(66, 110, 231);
   padding: 5px;
 }
 
@@ -133,13 +140,14 @@ h1 {
   width: 95%;
   min-height: 350px;
   height: fit-content;
-  border: 2px solid #000;
+  border: 3px solid black;
+  box-shadow: 0px 1px 1px black;
+  background-color: rgb(255, 255, 255);
   border-radius: 15px;
-  background: #fff;
-  box-shadow: 4px 3px 1px #000;
   display: flex;
   flex-wrap: wrap-reverse;
   overflow: hidden;
+  transition: all 0.3s ease-in-out;
 }
 
 .custom_scroll {
@@ -147,7 +155,7 @@ h1 {
 }
 
 .custom_scroll::-webkit-scrollbar {
-  width: 14px;
+  width: 10px;
 }
 
 .custom_scroll::-webkit-scrollbar-track {
@@ -158,6 +166,7 @@ h1 {
 .custom_scroll::-webkit-scrollbar-thumb {
   background-color: black;
   border-radius: 20px;
+  border: 1px solid #000;
 }
 
 .custom_scroll::-webkit-scrollbar-thumb:hover {
@@ -171,7 +180,7 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .item__geo {
@@ -194,27 +203,29 @@ h1 {
 
 .item_id p {
   font-weight: bold;
-  font-size: 10px;
+  font-size: 14px;
 }
 
 .item_tags {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
+  max-height: 46px;
+  overflow-y: hidden;
 }
 
 .tag {
-  font-size: 7px;
+  font-size: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
   min-width: 30px;
   height: 20px;
   border: 2px solid grey;
-  color: rgb(111, 58, 4);
   font-weight: bold;
   color: grey;
   padding: 3px;
+  background: #fff;
 }
 
 .item_time {
@@ -229,13 +240,15 @@ h1 {
   background: #fff;
   border-radius: 10px;
   transition: all 0.2s ease-in-out;
+  box-shadow: 1px 1px 2px #fff;
 }
 
 .item_time:hover {
   cursor: pointer;
   color: #fff;
   background: rgb(66, 110, 231);
-  box-shadow: 3px 2px 2px black;
+  box-shadow: 1px 1px 2px black;
+  transform: scale(1.05);
 }
 
 .item_time:disabled {
@@ -251,19 +264,32 @@ h1 {
   box-shadow: none;
   background-color: #fff;
 }
+@media screen and (min-width: 300px) {
+  h1 {
+    display: block;
+  }
+  .search_input {
+    width: 150px;
+  }
+  .close_container {
+    width: 60px;
+  font-size: 10px;
+  }
+}
 
 @media screen and (min-width: 500px) {
+  h1 {
+    font-size: 14px;
+  }
   .schedule_container {
     width: 300px;
     height: 400px;
-    top: calc(50% - 150px);
-    left: calc(50% - 100px);
     font-size: 14px;
     padding: 5 15px;
     margin: 0;
   }
   .active::before {
-    transform: translate(10px, 7px);
+    transform: translate(13px, 5px);
   }
 }
 
@@ -303,7 +329,6 @@ h1 {
   }
   h1 {
     font-size: 26px;
-    text-shadow: 3px 2px 1px black;
   }
 }
 </style>
