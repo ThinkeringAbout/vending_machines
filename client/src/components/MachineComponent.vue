@@ -34,7 +34,12 @@
     </div>
   </div>
   <Transition name="time">
-    <ScheduleTimeComponent @buttonClose="closeModal" :tradePointId="item.tradePointId" v-if="this.isModalOpen" @mouseleave="closeModal" />
+    <ScheduleTimeComponent
+      @buttonClose="closeModal"
+      :tradePointId="item.tradePointId"
+      v-if="this.isModalOpen"
+      @mouseleave="closeModal"
+    />
   </Transition>
 </template>
 
@@ -49,21 +54,21 @@ export default {
   data() {
     return {
       isModalOpen: false,
-    }
+    };
   },
   methods: {
-    openModal(event) {
+    openModal() {
       this.isModalOpen = true;
-      this.$emit('modalOpened');
+      this.$emit("modalOpened");
     },
     closeModal() {
       this.isModalOpen = false;
-      this.$emit('modalClosed');
+      this.$emit("modalClosed");
     },
     getReadableTag(tag) {
       switch (tag) {
         case "only_non_cash_payments":
-          return "Безнал 💰";
+          return "Безнал 💳";
         case "coffee":
           return "Кофе ☕";
         case "cashier":
@@ -77,38 +82,33 @@ export default {
       }
     },
     getStyles(tag) {
+      const styleObject = {
+        color: "",
+        borderColor: "",
+        boxShadow: "",
+      };
+      let mainColor = "black";
       switch (tag) {
         case "only_non_cash_payments":
-          return {
-            color: "rgb(18, 197, 33)",
-            borderColor: "rgb(18, 197, 33)",
-            boxShadow: "0 0 2px rgb(18, 197, 33)",
-          };
+          mainColor = "rgb(18, 197, 33)";
+          break;
         case "coffee":
-          return {
-            color: "rgb(139, 84, 29)",
-            borderColor: "rgb(139, 84, 29)",
-            boxShadow: "0 0 2px rgb(139, 84, 29)",
-          };
+          mainColor = "rgb(139, 84, 29)";
+          break;
         case "hot_chocolate":
-          return {
-            color: "rgb(111, 58, 4)",
-            borderColor: "rgb(111, 58, 4)",
-            boxShadow: "0 0 2px rgb(111, 58, 4)",
-          };
+          mainColor = "rgb(111, 58, 4)";
+          break;
         case "juices":
-          return {
-            color: "orange",
-            borderColor: "orange",
-            boxShadow: "0 0 2px orange",
-          };
+          mainColor = "orange";
+          break;
         default:
-          return {
-            color: "black",
-            borderColor: "black",
-            boxShadow: "0 0 2px black",
-          };
+          mainColor = "black";
+          break;
       }
+      styleObject.color = mainColor;
+      styleObject.borderColor = mainColor;
+      styleObject.boxShadow = `0 0 2px ${mainColor}`;
+      return styleObject;
     },
   },
   computed: {

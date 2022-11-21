@@ -1,7 +1,7 @@
 <template>
   <div class="schedule_container">
     <div class="close_container" @click="this.$emit('buttonClose')">
-        Закрыть
+      Закрыть
     </div>
     <h2>Время работы</h2>
     <p>{{ getTodayAvailability() }}</p>
@@ -62,13 +62,13 @@ export default {
       const date = new Date();
       const timeHour = date.getHours();
       const timeMinutes = date.getMinutes();
-      if (timeHour > Number(workTime.slice(-5, -3)) || timeHour < Number(workTime.slice(0, 2))) {
+      if (
+        timeHour > Number(workTime.slice(-5, -3)) ||
+        timeHour < Number(workTime.slice(0, 2)) ||
+        (timeHour == Number(workTime.slice(-5, -3)) &&
+          timeMinutes >= Number(workTime.slice(-2, workTime.length)))
+      ) {
         return "Закрыто";
-      }
-      if (timeHour == Number(workTime.slice(-5, -3))) {
-        if (timeMinutes >= Number(workTime.slice(-2, workTime.length))) {
-            return "Закрыто";
-        }
       }
       return `Открыто до ${workTime.slice(-5)}`;
     },
@@ -80,21 +80,8 @@ export default {
     getActiveDay() {
       const date = new Date();
       const today = date.getDay();
-      const transformedToday =
-        today == 0
-          ? "sun"
-          : today == 1
-          ? "mon"
-          : today == 2
-          ? "tue"
-          : today == 3
-          ? "wed"
-          : today == 4
-          ? "thu"
-          : today == 5
-          ? "fri"
-          : "sat";
-      return transformedToday;
+      const daysObject = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+      return daysObject[today];
     },
   },
 };
@@ -102,12 +89,13 @@ export default {
 
 <style>
 .schedule_container {
-  padding: 5px 15px;
+  padding: 25px;
+  margin: 25px;
   color: black;
   position: absolute;
   border: 2px solid black;
-  width: 100vw;
-  height: 100vh;
+  width: 90vw;
+  height: 90vh;
   border-radius: 15px;
   background: #fff;
   top: 0;
@@ -115,7 +103,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .schedule {
@@ -157,24 +145,24 @@ export default {
 }
 
 .close_container {
-    position: absolute;
-    right: 15px;
-    top: 22px;
-    width: 60px;
-    height: 20px;
-    font-weight: bold;
-    background-color: rgb(235, 49, 49);
-    color: #fff;
-    font-size: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.4s ease;
-    border-radius: 5px;
+  position: absolute;
+  right: 15px;
+  top: 22px;
+  width: 60px;
+  height: 20px;
+  font-weight: bold;
+  background-color: rgb(235, 49, 49);
+  color: #fff;
+  font-size: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.4s ease;
+  border-radius: 5px;
 }
 
 .close_container:hover {
-    cursor: pointer;
-    box-shadow: 0 0 5px red;
+  cursor: pointer;
+  box-shadow: 0 0 5px red;
 }
 </style>

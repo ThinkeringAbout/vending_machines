@@ -107,7 +107,6 @@ h1 {
   transition: border 0.4s ease-in-out;
 }
 
-
 .list {
   width: 100%;
   margin: 0 auto;
@@ -260,6 +259,8 @@ h1 {
     top: calc(50% - 150px);
     left: calc(50% - 100px);
     font-size: 14px;
+    padding: 5 15px;
+    margin: 0;
   }
   .active::before {
     transform: translate(10px, 7px);
