@@ -71,7 +71,7 @@ button {
 body {
   width: 100%;
   min-height: 100vh;
-  background: #d2d0d0;
+  background: #e1dbdb;
   display: flex;
   justify-content: center;
   align-items: center;
