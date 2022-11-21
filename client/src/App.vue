@@ -53,7 +53,7 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
 
 *,
 *::after,
@@ -79,10 +79,7 @@ body {
 
 h1 {
   color: #fff;
-  text-shadow: 1px 0 2px #000, 
-0 1px 2px #000, 
--1px 0 2px #000, 
-0 -1px 2px #000;
+  text-shadow: 1px 0 2px #000, 0 1px 2px #000, -1px 0 2px #000, 0 -1px 2px #000;
   font-size: 12px;
   display: none;
 }
@@ -273,7 +270,7 @@ h1 {
   }
   .close_container {
     width: 60px;
-  font-size: 10px;
+    font-size: 10px;
   }
 }
 

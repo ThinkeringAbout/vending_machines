@@ -28,14 +28,14 @@ export default {
   methods: {
     getWeekDay(key) {
       const weekDays = {
-        "mon": "Понедельник",
-        "tue": "Вторник",
-        "wed": "Среда",
-        "thu": "Четверг",
-        "fri": "Пятница",
-        "sat": "Суббота",
-        "sun": "Воскресенье",
-      }
+        mon: "Понедельник",
+        tue: "Вторник",
+        wed: "Среда",
+        thu: "Четверг",
+        fri: "Пятница",
+        sat: "Суббота",
+        sun: "Воскресенье",
+      };
       return weekDays[key];
     },
     getTime(time) {

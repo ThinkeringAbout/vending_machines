@@ -15,9 +15,7 @@
     </div>
     <div class="item_address">
       <p>
-        {{
-          item.tradePoint?.location.address
-        }}
+        {{ item.tradePoint?.location.address }}
       </p>
     </div>
     <div class="item_floor">
@@ -66,12 +64,12 @@ export default {
     },
     getReadableTag(tag) {
       const tagsObject = {
-        "only_non_cash_payments": "Безнал 💳",
-        "coffee": "Кофе ☕",
-        "cashier": "Есть кассир 🤵",
-        "juices": "Соки 🍊",
-        "hot_chocolate": "Горячий шоколад 🤎",
-      }
+        only_non_cash_payments: "Безнал 💳",
+        coffee: "Кофе ☕",
+        cashier: "Есть кассир 🤵",
+        juices: "Соки 🍊",
+        hot_chocolate: "Горячий шоколад 🤎",
+      };
       return tag in tagsObject ? tagsObject[tag] : "Unknown ❓";
     },
     getStyles(tag) {
@@ -82,12 +80,12 @@ export default {
       };
 
       const colorsObject = {
-        "only_non_cash_payments": "rgb(18, 197, 33)",
-        "coffee": "rgb(139, 84, 29)",
-        "cashier": "black",
-        "juices": "orange",
-        "hot_chocolate": "rgb(111, 58, 4)",
-      }
+        only_non_cash_payments: "rgb(18, 197, 33)",
+        coffee: "rgb(139, 84, 29)",
+        cashier: "black",
+        juices: "orange",
+        hot_chocolate: "rgb(111, 58, 4)",
+      };
 
       const mainColor = tag in colorsObject ? colorsObject[tag] : "black";
 
